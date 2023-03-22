@@ -1,4 +1,6 @@
 import requests
+import time
+from playsound import playsound
 
 
 def get_bitcoin_price(currency='USD'):
@@ -6,8 +8,12 @@ def get_bitcoin_price(currency='USD'):
     response = requests.get(url)
     response_json = response.json()
     current_price = response_json['bpi'][currency]['rate']
-    return current_price
+    return float(current_price.replace(',', ''))
 
 
 if __name__ == '__main__':
-    print(get_bitcoin_price())
+    while True:
+        print(get_bitcoin_price())
+        if get_bitcoin_price() < 30000:
+            playsound('./you-suffer.mp3')
+            time.sleep(10)
